@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Book</h1>
+        <form id="editBookForm">
+            <input type="text" id="title" value="{{ book.title }}" required>
+            <input type="text" id="author" value="{{ book.author }}" required>
+            <input type="text" id="genre" value="{{ book.genre }}" required>
+            <input type="number" id="price" value="{{ book.price }}" required>
+            <input type="number" id="publication_year" value="{{ book.publication_year }}" required>
+            <button type="submit">Update</button>
+        </form>
+        <a href="/" class="back-link">← Back to Books List</a>
+    </div>
+
+    <script>
+        document.getElementById("editBookForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const bookId = "{{ book.id }}"; // Get the book ID from template
+            const response = await fetch(`/books/update/${bookId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: document.getElementById("title").value,
+                    author: document.getElementById("author").value,
+                    genre: document.getElementById("genre").value,
+                    price: parseFloat(document.getElementById("price").value),
+                    publication_year: parseInt(document.getElementById("publication_year").value)
+                })
+            });
+
+            if (response.ok) {
+                window.location.href = "/";
+            } else {
+                alert("Update failed!");
+            }
+        });
+    </script>
+</body>
+</html>

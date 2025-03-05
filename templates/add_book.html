@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add a New Book</h1>
+        <form id="addBookForm">
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <input type="text" id="genre" placeholder="Genre" required>
+            <input type="number" id="price" placeholder="Price" required>
+            <input type="number" id="publication_year" placeholder="Publication Year" required>
+            <button type="submit">Add Book</button>
+        </form>
+        <a href="/" class="back-link">← Back to Books List</a>
+    </div>
+
+    <script>
+        document.getElementById("addBookForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const response = await fetch("/books/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: document.getElementById("title").value,
+                    author: document.getElementById("author").value,
+                    genre: document.getElementById("genre").value,
+                    price: document.getElementById("price").value,
+                    publication_year: document.getElementById("publication_year").value
+                })
+            });
+            if (response.ok) window.location.href = "/";
+        });
+    </script>
+</body>
+</html>
